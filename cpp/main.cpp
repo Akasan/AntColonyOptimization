@@ -1,4 +1,5 @@
-#include <stdio.h>
+#include <cstdio>
+:wq
 #include <iostream>
 #include "agent.hpp"
 
@@ -9,10 +10,10 @@
 
 using namespace std;
 
-
 int main(void)
 {
 		Agent agent(10, 10);
-		printf("%d\n", agent.get_length());
+		cout<< agent.get_length() << endl;
+
 		return 0;
 }

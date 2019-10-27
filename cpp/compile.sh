@@ -1,5 +1,7 @@
 #!/bin/bash
 
-gcc -c agent.cpp
-gcc -c main.cpp
-gcc -o main main.o agent.o
+rm *.o
+g++ -c agent.cpp
+g++ -c ant_system.cpp
+g++ -c main.cpp
+g++ -o main main.o agent.o ant_system.o -std=c++17
