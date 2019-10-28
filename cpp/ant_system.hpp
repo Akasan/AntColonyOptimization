@@ -8,8 +8,8 @@ using namespace std;
 
 class AntSystem{
 public:
-	Agent a(10, 10);
-	AntSystem();
+    Agent a(10, 10);
+    AntSystem();
 
 private:
 };

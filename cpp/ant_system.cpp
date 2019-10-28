@@ -4,5 +4,5 @@
 using namespace std;
 
 AntSystem::AntSystem(){
-	cout<< "HOGEHOGE" << endl;
+    cout<< "HOGEHOGE" << endl;
 }
