@@ -5,16 +5,16 @@
 using namespace std;
 
 Agent::Agent(int id, int city_num){
-	this->id = id;
+    this->id = id;
     this->route = new int[city_num];
 }
 
 Agent::~Agent(){
-	delete[] this->route;
+    delete[] this->route;
 }
 
 void Agent::reset_info(void){
-	this->length = 0;
+    this->length = 0;
 }
 
 
