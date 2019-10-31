@@ -1,15 +1,68 @@
-#pragma once
+#ifndef ANT_SYSTEM_H
+#define ANT_SYSTEM_H
 
-#include "agent.hpp"
+#include <cstdio>
 #include <iostream>
+#include "config.hpp"
 
 using namespace std;
 
+class Agent{
+public:
+    int length = 0;
+    int registered_city_num = 1;
+    int id;
+    int rank;
+    int last_city;
+    int* route;
+
+    Agent();
+    ~Agent();
+
+    void set_id(int);
+    void set_rank(int);
+    void reset_info(void);
+    void register_city(int);
+    void print_route(void);
+    int get_last_city(void);
+    int get_length(void);
+};
+
+inline void Agent::set_rank(int rank){
+    this->rank = rank;
+};
+
+inline void Agent::set_id(int _id){
+    this->id = _id;
+    this->last_city = _id;
+};
+
+inline int Agent::get_length(void){
+    return this->length;
+};
+
+inline void Agent::print_route(void){
+    for(int i=0; i<CITY_NUM; i++) cout << this->route[i] << endl;
+}
+
+inline void Agent::register_city(int city){
+    this->route[this->registered_city_num] = city;
+    this->registered_city_num++;
+    this->last_city = city;
+}
+
+/*****************************************************************************************/
 
 class AntSystem{
 public:
-    Agent a(10, 10);
+    Agent* agent;
+    float** distance_arr = new float*[CITY_NUM]; 
+    float** pheromone_arr = new float*[CITY_NUM];
     AntSystem();
+    ~AntSystem();
 
-private:
+    void generate_route();
+    void update_pheromone();
 };
+
+#endif

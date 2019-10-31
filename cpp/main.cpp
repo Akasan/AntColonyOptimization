@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <iostream>
-#include "agent.hpp"
+#include "ant_system.hpp"
 
 #define ALPHA 1.0
 #define BETA 3.0
@@ -11,8 +11,7 @@ using namespace std;
 
 int main(void)
 {
-   Agent agent(10, 10);
-   cout<< agent.get_length() << endl;
-   
-   return 0;
+    AntSystem ant_system;
+    ant_system.generate_route();
+    return 0;
 }
