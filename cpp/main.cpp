@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include "ant_system.hpp"
+#include "config.hpp"
 
 #define ALPHA 1.0
 #define BETA 3.0
@@ -12,6 +13,11 @@ using namespace std;
 int main(void)
 {
     AntSystem ant_system;
-    ant_system.generate_route();
+    int i;
+    for(i=0; i<ITERATION; i++){
+        ant_system.generate_route();
+        ant_system.calculate_distance();
+        ant_system.update_pheromone();
+    }
     return 0;
 }

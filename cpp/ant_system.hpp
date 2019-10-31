@@ -9,7 +9,7 @@ using namespace std;
 
 class Agent{
 public:
-    int length = 0;
+    float length = 0;
     int registered_city_num = 1;
     int id;
     int rank;
@@ -21,6 +21,7 @@ public:
 
     void set_id(int);
     void set_rank(int);
+    void set_length(float);
     void reset_info(void);
     void register_city(int);
     void print_route(void);
@@ -30,6 +31,10 @@ public:
 
 inline void Agent::set_rank(int rank){
     this->rank = rank;
+};
+
+inline void Agent::set_length(float _length){
+    this->length = _length;
 };
 
 inline void Agent::set_id(int _id){
@@ -56,6 +61,8 @@ inline void Agent::register_city(int city){
 class AntSystem{
 public:
     Agent* agent;
+    float best;
+    int iteration=0;
     float** distance_arr = new float*[CITY_NUM]; 
     float** pheromone_arr = new float*[CITY_NUM];
     AntSystem();
@@ -63,6 +70,7 @@ public:
 
     void generate_route();
     void update_pheromone();
+    void calculate_distance();
 };
 
 #endif

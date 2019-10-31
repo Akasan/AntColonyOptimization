@@ -39,6 +39,7 @@ void Agent::reset_info(void){
     this->registered_city_num = 1;
     for(int i=0; i<CITY_NUM; i++)    this->route[i] = 0;
     this->route[0] = this->id;
+    this->last_city = this->id;
 }
 
 
@@ -128,6 +129,66 @@ void AntSystem::generate_route(){
                     }
                 }
             }
+        }
+    }
+}
+
+void AntSystem::calculate_distance(){
+    int i, j, base, comp;
+    float distance, best;
+
+    for(i=0; i<AGENT_NUM; i++){
+        distance = 0.0;
+        for(j=0; j<CITY_NUM; j++){
+            base = this->agent[i].route[j];
+            if (j == CITY_NUM - 1){
+                comp = this->agent[i].route[0];
+                distance += this->distance_arr[base][comp];
+            }
+            else{
+                comp = this->agent[i].route[j+1];
+                distance += this->distance_arr[base][comp];
+            }
+        }
+        this->agent[i].set_length(distance);
+        if (i==0)best = distance;
+        else{
+            if(best > distance) best = distance;
+        }
+    }
+    if(this->iteration == 0){
+        this->best = best;
+        this->iteration = 1;
+    }
+    else{
+        if (this->best > best) this->best = best;
+    }
+    cout << "current best : " << best<< "\t all best: " << this->best << endl;
+}
+
+void AntSystem::update_pheromone(){
+    int i, j, base, comp;
+    float add_pheromone;
+    
+    for(i=0; i<CITY_NUM; i++){
+        for(j=i+1; j<CITY_NUM; j++){
+            this->pheromone_arr[i][j] = this->pheromone_arr[i][j] * RHO;
+            this->pheromone_arr[j][i] = this->pheromone_arr[i][j];
+        }
+    }
+
+    for(i=0; i<AGENT_NUM; i++){
+        add_pheromone = 1.0 / this->agent[i].get_length();
+        for(j=0; j<CITY_NUM; j++){
+            base = this->agent[i].route[j];
+            if (j == CITY_NUM - 1){
+                comp = this->agent[i].route[0];
+            }
+            else{
+                comp = this->agent[i].route[j+1];
+            }
+            this->pheromone_arr[base][comp] += add_pheromone;
+            this->pheromone_arr[comp][base] += add_pheromone;
         }
     }
 }
