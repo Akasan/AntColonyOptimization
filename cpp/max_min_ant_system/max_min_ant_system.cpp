@@ -1,6 +1,8 @@
 #include "max_min_ant_system.hpp"
 #include "config.hpp"
+#include "utils.hpp"
 #include <iostream>
+#include <unistd.h>
 #include <ctime>
 #include <cstdlib>
 #include <cstdio>
@@ -46,24 +48,25 @@ void Agent::reset_info(void){
 /******************************************************************************************/
 MaxMinAntSystem::MaxMinAntSystem(){
     float dis;
-    int dx, dy, i, j;
-    int** city_info = new int*[CITY_NUM];
+    float dx, dy;
+    int i, j;
+    float** city_info = new float*[CITY_NUM];
     int count = 0;
 
     this->agent = new Agent[AGENT_NUM];
-    for(i=0; i< AGENT_NUM; i++)  this->agent[i].set_id(i);
+    for(i=0; i<AGENT_NUM; i++)  this->agent[i].set_id(i);
     for(i=0; i<CITY_NUM; i++){
         this->distance_arr[i] = new float[CITY_NUM];
         this->pheromone_arr[i] = new float[CITY_NUM];
-        city_info[i] = new int[2];
+        city_info[i] = new float[2];
     }
 
-    ifstream ifs("../kroA100.csv");
+    ifstream ifs(get_benchmark());
     string line;
     
     while(getline(ifs, line)){
         vector<string> strvec = split(line, ',');
-        for(i=1; i<strvec.size(); i++)  city_info[count][i-1] = stoi(strvec.at(i));
+        for(i=0; i<strvec.size(); i++)  city_info[count][i] = stoi(strvec.at(i));
         count++;
     }
 

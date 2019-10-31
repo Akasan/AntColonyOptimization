@@ -4,6 +4,7 @@
 #define ITERATION 10000
 #define CITY_NUM 100
 #define AGENT_NUM 100
+#define BENCHMARK_NAME "kroA100.csv"
 
 #define ALPHA 0.5
 #define BETA 5.0
