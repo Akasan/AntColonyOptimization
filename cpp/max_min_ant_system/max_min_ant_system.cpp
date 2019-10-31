@@ -151,19 +151,26 @@ void MaxMinAntSystem::calculate_distance(){
             }
         }
         this->agent[i].set_length(distance);
-        if (i==0)best = distance;
+        if (i==0){
+            best = distance;
+            this->best_agent = 0;
+        }
         else{
-            if(best > distance) best = distance;
+            if(best > distance){
+                best = distance;
+                this->best_agent = i;
+            }
         }
     }
-    if(this->iteration == 0){
+    if(this->is_first){
         this->best = best;
-        this->iteration = 1;
+        this->is_first = false;
     }
     else{
         if (this->best > best) this->best = best;
     }
-    cout << "current best : " << best<< "\t all best: " << this->best << endl;
+    cout << "iterartion : " << this->iteration << "\tcurrent best : " << best<< "\t all best: " << this->best << endl;
+    this->iteration++;
 }
 
 void MaxMinAntSystem::update_pheromone(){
@@ -177,19 +184,17 @@ void MaxMinAntSystem::update_pheromone(){
         }
     }
 
-    for(i=0; i<AGENT_NUM; i++){
-        add_pheromone = 1.0 / this->agent[i].get_length();
-        for(j=0; j<CITY_NUM; j++){
-            base = this->agent[i].route[j];
-            if (j == CITY_NUM - 1){
-                comp = this->agent[i].route[0];
-            }
-            else{
-                comp = this->agent[i].route[j+1];
-            }
-            this->pheromone_arr[base][comp] += add_pheromone;
-            this->pheromone_arr[comp][base] += add_pheromone;
+    add_pheromone = 1.0 / this->agent[this->best_agent].get_length();
+    for(j=0; j<CITY_NUM; j++){
+        base = this->agent[this->best_agent].route[j];
+        if (j == CITY_NUM - 1){
+            comp = this->agent[this->best_agent].route[0];
         }
+        else{
+            comp = this->agent[this->best_agent].route[j+1];
+        }
+        this->pheromone_arr[base][comp] += add_pheromone;
+        this->pheromone_arr[comp][base] += add_pheromone;
     }
 }
 
@@ -200,7 +205,6 @@ void MaxMinAntSystem::modify_pheromone(){
 
     upper_bound = 1.0 / ((1 - RHO) * this->best);
     lower_bound = upper_bound * (1 - pow(0.05, 1.0 / CITY_NUM)) / ((CITY_NUM / 2.0 - 1) * pow(0.05, 1.0/CITY_NUM));
-    cout << "upper bound : " << upper_bound << "\t lower_bound : " << lower_bound << endl;
     
     for(i=0; i<CITY_NUM; i++){
         for(j=i+1; j<CITY_NUM; j++){

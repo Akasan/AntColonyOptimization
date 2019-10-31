@@ -62,7 +62,9 @@ class MaxMinAntSystem{
 public:
     Agent* agent;
     float best;
-    int iteration=0;
+    bool is_first = true;
+    int iteration=1;
+    int best_agent;
     float** distance_arr = new float*[CITY_NUM]; 
     float** pheromone_arr = new float*[CITY_NUM];
     MaxMinAntSystem();
