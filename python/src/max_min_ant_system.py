@@ -1,4 +1,4 @@
-from .ant_system import AntSystem
+from ant_system import AntSystem
 
 
 class MaxMinAntSystem(AntSystem):
@@ -14,7 +14,7 @@ class MaxMinAntSystem(AntSystem):
                                               pheromone_init,
                                               alpha,
                                               beta,
-                                              rhp)
+                                              rho)
 
         self.PHEROMONE_MIN_COEF = (1 - pow(0.05, 1.0 / self.CITY_NUM) / ((self.CITY_NUM / 2 - 1) * pow(0.05, 1.0 / self.CITY_NUM)))
         print(self.PHEROMONE_MIN_COEF)
@@ -24,4 +24,6 @@ class MaxMinAntSystem(AntSystem):
         """ saturate pheromone values
         """
         pheromone_max = 1.0 / ((1 - self.RHO) * self.best_score)
-        pheromone_min = 
+        pheromone_min = pheromone_max * (1 - pow(0.05, 1.0 / self.CITY_NUM)) / ((self.CITY_NUM / 2.0 - 1) * pow(0.05, 1.0 / self.CITY_NUM))
+        self.pheromone[self.pheromone < pheromone_min] = pheromone_min
+        self.pheromone[self.pheromone > pheromone_max] = pheromone_max

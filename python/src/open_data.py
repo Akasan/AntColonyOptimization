@@ -6,8 +6,10 @@ def open_dataset(filename):
     Arguments:
         filename {str} -- file name of benchmark
     """
+    filename =  "/Users/akagawaoozora/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Github/AntColonyOptimization/prepare_dataset/dataset/kroa100.tsp"
     with open(filename, "r") as f:
         raw_data = f.readlines()
+
 
     city_num = int(raw_data[3].strip().split(" ")[1])
 

@@ -6,12 +6,11 @@ import subprocess as sp
 EXTENSION = [".tsp", ".tour"]
 
 save_folder = "csv_dataset"
-mkdir_command = "mkdir " + save_folder
+mkdir_command = f"mkdir {save_folder}"
 
 
 def get_file_list():
-    folder = "./dataset/*"
-    file_list = glob(folder)
+    file_list = glob("./dataset/*")
     return file_list
 
 

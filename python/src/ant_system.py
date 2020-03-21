@@ -49,7 +49,6 @@ class AntSystem:
 
         for i in range(self.CITY_NUM):
             for j in range(i+1, self.CITY_NUM):
-                # TODO scipyで計算できる関数が用意されているはず
                 dx = self.city_info[i, 0] - self.city_info[j, 0]
                 dy = self.city_info[i, 1] - self.city_info[j, 1]
                 dis = pow(pow(dx, 2) + pow(dy, 2), 0.5)
@@ -75,12 +74,10 @@ class AntSystem:
             return self.distance_arr[max(i, j), min(i, j)]
 
     def _init_population(self):
-        """ generate population
-        """
+        """ generate population"""
         self.agent = {}
 
         for i in range(self.AGENT_NUM):
-            # self.agent[i] = Agent(i)
             threshld = random.random()
             if threshld > 0.5:
                 self.agent[i] = Agent(int(np.random.randint(0, self.CITY_NUM, 1)))
@@ -88,9 +85,11 @@ class AntSystem:
                 self.agent[i] = Agent(i)
 
     def _init_pheromone(self):
+        """ initialize pheromone"""
         self.pheromone = np.ones((self.CITY_NUM, self.CITY_NUM)) * self.PHEROMONE_INIT
 
     def generate_route(self):
+        """ generate each agents' route"""
         pheromone = np.power(self.pheromone, self.ALPHA)
 
         for agent_no, agent_data in self.agent.items():
@@ -139,6 +138,7 @@ class AntSystem:
                         pre_id = k
 
     def calculate_distance(self):
+        """ calculate each agent's distance"""
         best = 1e20
         for agent_no, agent_data in self.agent.items():
             for pre, curr in agent_data.get_route_generator():
@@ -153,9 +153,19 @@ class AntSystem:
         print(f"Current best: {best:.1f} \t all best: {self.best_score:.1f}")
 
     def _is_valid_city(self, city_no, agent_data):
+        """ check whether specified city is valid
+
+        Arguments:
+            city_no {int} -- city number
+            agent_data {Agent} -- agent instance
+
+        Returns:
+            {bool} -- True when city_no is valid
+        """
         return True if not city_no in agent_data.route else False
 
     def update_pheromone(self):
+        """ update pheromone information"""
         self.pheromone *= self.RHO
         pre_pheromone = self.pheromone
         for agent_no, agent_data in self.agent.items():
@@ -168,4 +178,5 @@ class AntSystem:
         self.pheromone[self.pheromone < 0.0001] = 0.0001
 
     def reset_agent(self):
+        """ reset agent instance"""
         self._init_population()
