@@ -48,24 +48,24 @@ class AntSystem{
             }
         }
 
-		for(int i=0; i<cityNum; i++)
-		{
-			for(int j=i+1; j<cityNum; j++){
-				dis = Math.Pow(Math.Pow(cityInfo[i, 0] - cityInfo[j, 0], 2.0) + Math.Pow(cityInfo[i, 1] - cityInfo[j, 1], 2.0), 0.5);
-				distanceArr[i, j] = dis;
-				distanceArr[j, i] = dis;
-				distanceArrInv[i, j] = 1.0 / dis;
-				distanceArrInv[j, i] = 1.0 / dis;
-			}
-		}
+        for(int i=0; i<cityNum; i++)
+        {
+            for(int j=i+1; j<cityNum; j++){
+                dis = Math.Pow(Math.Pow(cityInfo[i, 0] - cityInfo[j, 0], 2.0) + Math.Pow(cityInfo[i, 1] - cityInfo[j, 1], 2.0), 0.5);
+                distanceArr[i, j] = dis;
+                distanceArr[j, i] = dis;
+                distanceArrInv[i, j] = 1.0 / dis;
+                distanceArrInv[j, i] = 1.0 / dis;
+            }
+        }
     }
 
     public void generateRoute(Agent agent, int city){
         double probDenominator, dRandom, probSum, distance=0.0;
-	    Random cRandom = new System.Random();
-		int i, j, preCity = city;
+        Random cRandom = new System.Random();
+        int i, j, preCity = city;
 
-		agent.addRoute(city);	
+        agent.addRoute(city);	
         for(i=1; i<cityNum; i++){
             double[] v = new double[cityNum];
             probDenominator = 0.0;
