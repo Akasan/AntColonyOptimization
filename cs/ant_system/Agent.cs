@@ -12,9 +12,9 @@ class Agent{
         resetRoute();
     }
 
-	public void setDistance(double distance){
-		this.distance = distance;
-	}
+    public void setDistance(double distance){
+        this.distance = distance;
+    }
    
     // reset distance
     public void resetDistance(){
@@ -46,14 +46,14 @@ class Agent{
     // describe route
     public void describeRoute(){
         for (int i=0; i<cityIdx; i++){
-			Console.WriteLine(route[i].ToString());
+            Console.WriteLine(route[i].ToString());
         }
     }
 
     public bool isAlreadySet(int city){
-		for (int i=0; i<cityIdx; i++){
-			if (route[i] == city)return true;
-		}
+        for (int i=0; i<cityIdx; i++){
+            if (route[i] == city)return true;
+        }
         return false;
     }
 }

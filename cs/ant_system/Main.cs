@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 class ASMain{
     public const int ITERATION = 10;
-	const string FILENAME = "../kroA100.csv";
+    const string FILENAME = "../kroA100.csv";
     static public int cityNum = 100;
     static public int agentNum = 100;
     static public List<Agent> agent = new List<Agent>();
