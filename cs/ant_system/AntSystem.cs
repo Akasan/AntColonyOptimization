@@ -67,18 +67,18 @@ class AntSystem{
 
 		agent.addRoute(city);	
         for(i=1; i<cityNum; i++){
-			double[] v = new double[cityNum];
-			probDenominator = 0.0;
+            double[] v = new double[cityNum];
+            probDenominator = 0.0;
 
-			for(j=0; j<cityNum; j++){
-				if(!agent.isAlreadySet(j)){
-					double val = Math.Pow(pheromoneArr[preCity, j], alpha) * Math.Pow(distanceArrInv[preCity, j], beta);
-					v[j] = val;
-					probDenominator += val;
-				}
-			}
-			dRandom = cRandom.NextDouble();
-			probSum = 0;
+            for(j=0; j<cityNum; j++){
+                if(!agent.isAlreadySet(j)){
+                    double val = Math.Pow(pheromoneArr[preCity, j], alpha) * Math.Pow(distanceArrInv[preCity, j], beta);
+                    v[j] = val;
+                    probDenominator += val;
+                }
+            }
+            dRandom = cRandom.NextDouble();
+            probSum = 0;
 
             for(j=0; j<cityNum; j++){
                 if(!agent.isAlreadySet(j)){
