@@ -4,7 +4,6 @@ using System.IO;
 
 class MMAS{
     private double[,] distanceArr, distanceArrInv, pheromoneArr;
-    private double initPheromone;
     private double alpha, beta, rho, pheromoneQ;
 
     public double bestFitness = -1;
@@ -14,18 +13,17 @@ class MMAS{
     public MMAS(int cityNum, string filename, double initPheromone, double alpha, double beta, double rho, double pheromoneQ)
     {
         this.cityNum = cityNum;
-        this.initPheromone = initPheromone;
         this.alpha = alpha;
         this.beta = beta;
         this.rho = rho;
         this.pheromoneQ = pheromoneQ;
         distanceArr = new double[cityNum, cityNum];
         distanceArrInv = new double[cityNum, cityNum];
-        makePheromoneArr();
+        makePheromoneArr(initPheromone);
         makeDistanceArr(cityNum, filename);
     }
 
-    private void makePheromoneArr(){
+    private void makePheromoneArr(double initPheromone){
         pheromoneArr = new double[cityNum, cityNum];
         for (int i=0; i<cityNum; i++){
             for (int j=i+1; j<cityNum; j++){
@@ -38,7 +36,7 @@ class MMAS{
     private void makeDistanceArr(int cityNum, string filename){
         double[,] cityInfo = new double[cityNum, 2];
         double dis;
-        int count = 0;
+        int count = 0, i, j;
         StreamReader sr = new StreamReader(filename);
         while(!sr.EndOfStream){
             string line = sr.ReadLine();
@@ -49,9 +47,9 @@ class MMAS{
         }
         sr.Close();
 
-        for(int i=0; i<cityNum; i++)
+        for(i=0; i<cityNum; i++)
         {
-            for(int j=i+1; j<cityNum; j++){
+            for(j=i+1; j<cityNum; j++){
                 dis = Math.Pow(Math.Pow(cityInfo[i, 0] - cityInfo[j, 0], 2.0) + Math.Pow(cityInfo[i, 1] - cityInfo[j, 1], 2.0), 0.5);
                 distanceArr[i, j] = dis;
                 distanceArr[j, i] = dis;
@@ -106,8 +104,9 @@ class MMAS{
 
     private void reducePheromone(double pheromoneMin){
         double newPheromone;
-        for(int i=0; i<cityNum; i++){
-            for(int j=i+1; j<cityNum; j++){
+        int i, j;
+        for(i=0; i<cityNum; i++){
+            for(j=i+1; j<cityNum; j++){
                 newPheromone = pheromoneArr[i, j] * rho;
                 newPheromone = newPheromone<pheromoneMin?pheromoneMin: newPheromone;
                 pheromoneArr[i, j] = newPheromone;

@@ -16,10 +16,6 @@ class Agent{
         this.distance = distance;
     }
 
-    // public void addDistance(double distance){
-    //     this.distance += distance;
-    // }
-
     // reset distance
     public void resetDistance(){
         setDistance(0.0);
