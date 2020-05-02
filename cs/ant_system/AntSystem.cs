@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 class AntSystem{
-    private double[,] distanceArr;
-    private double[,] distanceArrInv;
-    private double[,] pheromoneArr;
+    private double[,] distanceArr, distanceArrInv, pheromoneArr;
     private double initPheromone;
     private double alpha, beta, rho, pheromoneQ;
 
@@ -23,11 +21,11 @@ class AntSystem{
         this.pheromoneQ = pheromoneQ;
         distanceArr = new double[cityNum, cityNum];
         distanceArrInv = new double[cityNum, cityNum];
-        resetPheromone();
+        makePheromoneArr();
         makeDistanceArr(cityNum, filename);
     }
 
-    private void resetPheromone(){
+    private void makePheromoneArr(){
         pheromoneArr = new double[cityNum, cityNum];
         for (int i=0; i<cityNum; i++){
             for (int j=i+1; j<cityNum; j++){
