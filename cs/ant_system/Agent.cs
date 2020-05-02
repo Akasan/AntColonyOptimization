@@ -18,7 +18,7 @@ class Agent{
 
     // reset distance
     public void resetDistance(){
-		setDistance(0.0);
+        setDistance(0.0);
     }
 
     public void reset(){

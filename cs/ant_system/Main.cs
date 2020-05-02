@@ -21,7 +21,7 @@ class ASMain{
         for (int iter=0; iter<ITERATION; iter++){
             for(int i=0; i<agentNum; i++) agent[i].reset();
             generateRoute();
-			updatePheromone();
+            updatePheromone();
             Console.WriteLine(iter.ToString() + "   " + asy.bestFitnss.ToString());
         }
     }
@@ -32,11 +32,11 @@ class ASMain{
         }
     }
 
-	static public void updatePheromone(){
+    static public void updatePheromone(){
         asy.reducePheromone();
         for(int i=0; i<agentNum; i++){
             asy.updatePheromone(agent[i]);
         }
-	}
+    }
 }
 
