@@ -7,16 +7,20 @@ class AntSystem{
     private double[,] distanceArrInv;
     private double[,] pheromoneArr;
     private double initPheromone;
-    private double alpha, beta, rho;
+    private double alpha, beta, rho, pheromoneQ;
+
+    public double bestFitnss = -1;
+    public Agent bestAgent;
     private int cityNum;
 
-    public AntSystem(int cityNum, string filename, double initPheromone, double alpha, double beta, double rho)
+    public AntSystem(int cityNum, string filename, double initPheromone, double alpha, double beta, double rho, double pheromoneQ)
     {
         this.cityNum = cityNum;
         this.initPheromone = initPheromone;
         this.alpha = alpha;
         this.beta = beta;
         this.rho = rho;
+        this.pheromoneQ = pheromoneQ;
         distanceArr = new double[cityNum, cityNum];
         distanceArrInv = new double[cityNum, cityNum];
         resetPheromone();
@@ -65,7 +69,7 @@ class AntSystem{
         Random cRandom = new System.Random();
         int i, j, preCity = city;
 
-        agent.addRoute(city);	
+        agent.addRoute(city);
         for(i=1; i<cityNum; i++){
             double[] v = new double[cityNum];
             probDenominator = 0.0;
@@ -88,12 +92,35 @@ class AntSystem{
                         distance += distanceArr[preCity, j];
                         preCity = j;
                         break;
-                    }	
+                    }
                 }
             }
         }
         distance += distanceArr[preCity, city];
         agent.setDistance(distance);
-        Console.WriteLine(agent.distance.ToString());
+
+        if(bestFitnss==-1 || distance < bestFitnss){
+            bestFitnss = distance;
+            bestAgent = agent;
+        }
     }
+
+    public void reducePheromone(){
+        for(int i=0; i<cityNum; i++){
+            for(int j=i+1; j<cityNum; j++){
+                pheromoneArr[i, j] = pheromoneArr[i, j] * rho;
+                pheromoneArr[j, i] = pheromoneArr[i, j];
+            }
+        }
+    }
+
+	public void updatePheromone(Agent agent){
+        double add = pheromoneQ / agent.distance;
+		for(int i=0; i<cityNum-1; i++){
+            pheromoneArr[agent.route[i], agent.route[i+1]] += add;
+            pheromoneArr[agent.route[i+1], agent.route[i]] += add;
+		}
+        pheromoneArr[agent.route[0], agent.route[cityNum-1]] += add;
+        pheromoneArr[agent.route[cityNum-1], agent.route[0]] += add;
+	}
 }

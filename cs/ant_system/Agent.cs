@@ -15,10 +15,15 @@ class Agent{
     public void setDistance(double distance){
         this.distance = distance;
     }
-   
+
     // reset distance
     public void resetDistance(){
 		setDistance(0.0);
+    }
+
+    public void reset(){
+        setDistance(0.0);
+        resetRoute();
     }
 
     // reset route
@@ -32,7 +37,7 @@ class Agent{
         route.Add(city);
         cityIdx += 1;
     }
-    
+
     // get last city
     public int getLastCity(){
         if (cityIdx > 0){
