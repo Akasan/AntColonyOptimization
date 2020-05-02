@@ -4,7 +4,6 @@ using System.IO;
 
 class AntSystem{
     private double[,] distanceArr, distanceArrInv, pheromoneArr;
-    private double initPheromone;
     private double alpha, beta, rho, pheromoneQ;
 
     public double bestFitnss = -1;
@@ -14,18 +13,17 @@ class AntSystem{
     public AntSystem(int cityNum, string filename, double initPheromone, double alpha, double beta, double rho, double pheromoneQ)
     {
         this.cityNum = cityNum;
-        this.initPheromone = initPheromone;
         this.alpha = alpha;
         this.beta = beta;
         this.rho = rho;
         this.pheromoneQ = pheromoneQ;
         distanceArr = new double[cityNum, cityNum];
         distanceArrInv = new double[cityNum, cityNum];
-        makePheromoneArr();
+        makePheromoneArr(initPheromone);
         makeDistanceArr(cityNum, filename);
     }
 
-    private void makePheromoneArr(){
+    private void makePheromoneArr(double initPheromone){
         pheromoneArr = new double[cityNum, cityNum];
         for (int i=0; i<cityNum; i++){
             for (int j=i+1; j<cityNum; j++){
@@ -40,15 +38,14 @@ class AntSystem{
         double dis;
         int count = 0;
         StreamReader sr = new StreamReader(filename);
-        {
-            while(!sr.EndOfStream){
-                string line = sr.ReadLine();
-                string[] city = line.Split(",");
-                cityInfo[count, 0] = double.Parse(city[0]);
-                cityInfo[count, 1] = double.Parse(city[1]);
-                count += 1;
-            }
+        while(!sr.EndOfStream){
+            string line = sr.ReadLine();
+            string[] city = line.Split(",");
+            cityInfo[count, 0] = double.Parse(city[0]);
+            cityInfo[count, 1] = double.Parse(city[1]);
+            count += 1;
         }
+        sr.Close();
 
         for(int i=0; i<cityNum; i++)
         {
@@ -62,12 +59,14 @@ class AntSystem{
         }
     }
 
-    public void generateRoute(Agent agent, int city){
+    public void generateRoute(Agent agent){
         double probDenominator, dRandom, probSum, distance=0.0;
         Random cRandom = new System.Random();
-        int i, j, preCity = city;
+        Random firstCity = new System.Random();
+        int fCity = firstCity.Next(0, cityNum);
+        int i, j, preCity = fCity;
 
-        agent.addRoute(city);
+        agent.addRoute(preCity);
         for(i=1; i<cityNum; i++){
             double[] v = new double[cityNum];
             probDenominator = 0.0;
@@ -83,7 +82,7 @@ class AntSystem{
             probSum = 0;
 
             for(j=0; j<cityNum; j++){
-                if(!agent.isAlreadySet(j)){
+                if(v[j] != 0){
                     probSum += v[j] / probDenominator;
                     if(probSum>dRandom){
                         agent.addRoute(j);
@@ -94,7 +93,7 @@ class AntSystem{
                 }
             }
         }
-        distance += distanceArr[preCity, city];
+        distance += distanceArr[preCity, preCity];
         agent.setDistance(distance);
 
         if(bestFitnss==-1 || distance < bestFitnss){
@@ -103,7 +102,7 @@ class AntSystem{
         }
     }
 
-    public void reducePheromone(){
+    private void reducePheromone(){
         for(int i=0; i<cityNum; i++){
             for(int j=i+1; j<cityNum; j++){
                 pheromoneArr[i, j] = pheromoneArr[i, j] * rho;
@@ -113,6 +112,7 @@ class AntSystem{
     }
 
     public void updatePheromone(Agent agent){
+        reducePheromone();
         double add = pheromoneQ / agent.distance;
         for(int i=0; i<cityNum-1; i++){
             pheromoneArr[agent.route[i], agent.route[i+1]] += add;

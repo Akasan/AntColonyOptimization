@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 
-class ASMain{
+class MMASMain{
     public const int ITERATION = 2000;
     const string FILENAME = "../kroA100.csv";
     static public int cityNum = 100;
@@ -28,7 +28,7 @@ class ASMain{
 
     static public void generateRoute(){
         for (int i=0; i<agentNum; i++){
-            mmas.generateRoute(agent[i], i);
+            mmas.generateRoute(agent[i]);
         }
     }
 
