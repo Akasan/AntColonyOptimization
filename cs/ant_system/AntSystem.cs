@@ -113,7 +113,7 @@ class AntSystem{
     public void updatePheromone(Agent agent){
         reducePheromone();
         double add = pheromoneQ / agent.distance;
-		int city1, city2;
+        int city1, city2;
         for(int i=0; i<cityNum; i++){
             city1 = agent.route[i];
             city2 = agent.route[(i+1)%cityNum];
