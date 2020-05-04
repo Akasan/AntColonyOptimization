@@ -36,7 +36,8 @@ class AntSystem{
     private void makeDistanceArr(int cityNum, string filename){
         double[,] cityInfo = new double[cityNum, 2];
         double dis;
-        int count = 0;
+        int count = 0, i, j;
+
         StreamReader sr = new StreamReader(filename);
         while(!sr.EndOfStream){
             string line = sr.ReadLine();
@@ -47,14 +48,12 @@ class AntSystem{
         }
         sr.Close();
 
-        for(int i=0; i<cityNum; i++)
+        for(i=0; i<cityNum; i++)
         {
-            for(int j=i+1; j<cityNum; j++){
+            for(j=i+1; j<cityNum; j++){
                 dis = Math.Pow(Math.Pow(cityInfo[i, 0] - cityInfo[j, 0], 2.0) + Math.Pow(cityInfo[i, 1] - cityInfo[j, 1], 2.0), 0.5);
-                distanceArr[i, j] = dis;
-                distanceArr[j, i] = dis;
-                distanceArrInv[i, j] = 1.0 / dis;
-                distanceArrInv[j, i] = 1.0 / dis;
+                 distanceArr[i, j] = distanceArr[j, i] = dis;
+                 distanceArrInv[i, j] = distanceArrInv[j, i] = dis;
             }
         }
     }
@@ -93,7 +92,7 @@ class AntSystem{
                 }
             }
         }
-        distance += distanceArr[preCity, preCity];
+        distance += distanceArr[preCity, fCity];
         agent.setDistance(distance);
 
         if(bestFitnss==-1 || distance < bestFitnss){
@@ -114,11 +113,12 @@ class AntSystem{
     public void updatePheromone(Agent agent){
         reducePheromone();
         double add = pheromoneQ / agent.distance;
-        for(int i=0; i<cityNum-1; i++){
-            pheromoneArr[agent.route[i], agent.route[i+1]] += add;
-            pheromoneArr[agent.route[i+1], agent.route[i]] += add;
+		int city1, city2;
+        for(int i=0; i<cityNum; i++){
+            city1 = agent.route[i];
+            city2 = agent.route[(i+1)%cityNum];
+            pheromoneArr[city1, city2] += add;
+            pheromoneArr[city2, city1] += add;
         }
-        pheromoneArr[agent.route[0], agent.route[cityNum-1]] += add;
-        pheromoneArr[agent.route[cityNum-1], agent.route[0]] += add;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 class MMASEliteMain{
-    public const int ITERATION = 2000;
+    public const int ITERATION = 10000;
     const string FILENAME = "../kroA100.csv";
     static public int cityNum = 100;
     static public int agentNum = 140;
@@ -11,6 +11,7 @@ class MMASEliteMain{
     static public MMASElite mmasElite;
     static public double alpha=1.0, beta=5.0, rho=0.50, pheromoneQ=100.0;
     static public double initPheromone = 1.0;
+
 
     static void Main(){
         mmasElite = new MMASElite(cityNum, FILENAME, initPheromone, alpha, beta, rho, pheromoneQ);
